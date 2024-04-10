@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 export interface WheelComponentProps {
     segments: string[]
@@ -15,7 +15,6 @@ export interface WheelComponentProps {
     fontFamily?: string
     fontSize?: string
     outlineWidth?: number
-    setWinner: Function
 }
 
 const WheelComponent = ({
@@ -32,9 +31,10 @@ const WheelComponent = ({
     downDuration = 1000,
     fontFamily = 'proxima-nova',
     fontSize = '1em',
-    outlineWidth = 10,
-    setWinner
+    outlineWidth = 10
 }: WheelComponentProps) => {
+    const [winner, setWinner] = useState("Spin")
+
     const randomString = () => {
         const chars =
             '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('')
@@ -73,6 +73,7 @@ const WheelComponent = ({
     const wheelInit = () => {
         initCanvas()
         wheelDraw()
+        setWinner("Spin")
     }
 
     const initCanvas = () => {
@@ -253,9 +254,18 @@ const WheelComponent = ({
         const ctx = canvasContext
         ctx.clearRect(0, 0, dimension, dimension)
     }
-
+    const start = () => {
+        const audio = new Audio("../mouse-click.mp3")
+        audio.volume = 0.3
+        audio.play()
+    }
     return (
-        <div id={wheelId.current}>
+        <div className='relative w-fit' id={wheelId.current}
+            onClick={start}
+        >
+            <div id='label' className='pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-black text-white flex justify-center text-center items-center font-bold'>
+                {winner}
+            </div>
             <canvas
                 id={canvasId.current}
                 width={dimension}

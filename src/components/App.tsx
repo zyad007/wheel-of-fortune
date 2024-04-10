@@ -42,7 +42,9 @@ export default function App() {
       <div>
         {selectedWheel !== 5 ? (
           selectedWheel !== 7 ? (
-            <Wheel9 />
+            <div>
+              <Wheel9 />
+            </div>
           ) : (
             <Wheel7 />
           )
